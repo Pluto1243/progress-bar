@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.raccoon.team.boot.mapper.CheckMapper">
+  <resultMap id="Check" type="cn.raccoon.team.boot.entity.Check"/>
+  <select id="listCheck" resultMap="Check">
+    SELECT date_format(`date`, '%Y-%m-%d') AS `date`,
+           count(*)                        AS count
+    FROM `check_in`
+    WHERE `userId` = #{userId}
+    GROUP BY date_format(`date`, '%Y-%m-%d')
+  </select>
+
+  <select id="getLastCheck" resultMap="Check">
+    SELECT `current`
+    FROM `check_in`
+    WHERE `progressId` = #{progressId}
+    ORDER BY id DESC
+    LIMIT 1, 1
+  </select>
+</mapper>
